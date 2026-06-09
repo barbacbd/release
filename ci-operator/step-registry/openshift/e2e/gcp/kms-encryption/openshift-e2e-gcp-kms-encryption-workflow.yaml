@@ -1,0 +1,16 @@
+workflow:
+  as: openshift-e2e-gcp-kms-encryption
+  steps:
+    pre:
+    - ref: gcp-provision-kms-key
+    - chain: ipi-conf-gcp
+    - ref: ipi-conf-gcp-osdisk-encryption-key
+    - chain: ipi-install
+    test:
+    - ref: openshift-e2e-test
+    post:
+    - chain: ipi-gcp-post
+  documentation: |-
+    The GCP KMS encryption workflow ensures a shared customer-managed KMS key
+    exists (global location, reused across runs), configures install-config
+    with OS disk encryption, installs a cluster, and runs the conformance suite.
